@@ -1,24 +1,27 @@
 import * as dotenv from 'dotenv';
 
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PostModule } from './post/post.module';
 
 dotenv.config();
 
 @Module({
   imports: [
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
+    TypeOrmModule.forRoot({
+      type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: 'DevBlog',
-      models: [],
+      synchronize: true,
+      entities: [],
     }),
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
